@@ -2,7 +2,7 @@
 and modified to include text alert
 sensorUsed: sound sensor
 myAdditions: adding twilio text features, so that it will send a text to my phone if the read value is higher than certian range
-
+twilio code was modelled based on http://twilio.github.io/twilio-node/
 */
 
 var soundLib = require('jsupm_groveloudness');         //including the upm_groveloudness library 
