@@ -1,41 +1,20 @@
-/*jslint node:true, vars:true, bitwise:true, unparam:true */
-/*jshint unused:true */
-
-/*
-* Author: Zion Orent <zorent@ics.com>
-* Copyright (c) 2015 Intel Corporation.
-*
-* Permission is hereby granted, free of charge, to any person obtaining
-* a copy of this software and associated documentation files (the
-* "Software"), to deal in the Software without restriction, including
-* without limitation the rights to use, copy, modify, merge, publish,
-* distribute, sublicense, and/or sell copies of the Software, and to
-* permit persons to whom the Software is furnished to do so, subject to
-* the following conditions:
-*
-* The above copyright notice and this permission notice shall be
-* included in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-* LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-* OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-* WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/* this code was partly taken from https://github.com/intel-iot-devkit/upm/blob/master/examples/javascript/mma7660.js
+and modified.
+sensorUsed: 3 axis 1.5g digital accelerometer, and RGB lcd display
+myAddition: added a lcd screen to display the accelertometer values
 */
 
-var digitalAccelerometer = require('jsupm_mma7660');
-var lcd = require('jsupm_i2clcd');
-var beep= require('mraa');
+var digitalAccelerometer = require('jsupm_mma7660');        //including the upm mma7660 library; required for accelerometer
+var lcd = require('jsupm_i2clcd');                          //inclduing the upm i2clcd libarary; required for rgb lcd screen
+
 
 // Instantiate an MMA7660 on I2C bus 0
 var myDigitalAccelerometer = new digitalAccelerometer.MMA7660(
 					1, 
-					digitalAccelerometer.MMA7660_DEFAULT_I2C_ADDR);
+					digitalAccelerometer.MMA7660_DEFAULT_I2C_ADDR);      //ceating a object i think. saying the i2c is connected to port 1, and used                                                                           //the default adress
 
-var myLcd = new lcd.Jhd1313m1(0, 0x3E,0x62);
-var myBeep = new beep.Gpio(8);
+var myLcd = new lcd.Jhd1313m1(0, 0x3E,0x62);                            //setting up the lcd screen, connect to i2c 0.
+
 // place device in standby mode so we can write registers
 myDigitalAccelerometer.setModeStandby();
 
@@ -68,12 +47,11 @@ var myInterval = setInterval(function()
 	myDigitalAccelerometer.getAcceleration(ax, ay, az);
 	outputStr = "Acceleration: x = " + roundNum(digitalAccelerometer.floatp_value(ax), 6) + "g y = " + roundNum(digitalAccelerometer.floatp_value(ay), 6) + "g z = " + roundNum(digitalAccelerometer.floatp_value(az), 6) + "g";
 	console.log(outputStr);
-    myLcd.setCursor(0,0);
+    myLcd.setCursor(0,0);                                                                   //set starting point 
     myLcd.write("Acceleration: ");
     myLcd.setCursor(1,0);
-    myLcd.write("x = " + roundNum(digitalAccelerometer.floatp_value(ax), 6)+ "g");
-    myBeep.write(HIGH);
-}, 500);
+    myLcd.write("x = " + roundNum(digitalAccelerometer.floatp_value(ax), 6)+ "g");          //sendig data to screen
+}, 500);                                                                                    //will obtain and print data every .5 s
 
 // round off output to match C example, which has 6 decimal places
 function roundNum(num, decimalPlaces)
