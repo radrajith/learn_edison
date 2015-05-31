@@ -2,10 +2,16 @@
 and modified to include text alert
 sensorUsed: sound sensor
 myAdditions: adding twilio text features, so that it will send a text to my phone if the read value is higher than certian range
+<<<<<<< HEAD
 
 */      
 var beepLib = require('mraa');                          //including the mraa library/
 //console.log('MRAA Version: ' + beepLib.getVersion()); //write the mraa version to the console
+=======
+twilio code was modelled based on http://twilio.github.io/twilio-node/
+*/
+
+>>>>>>> origin/master
 var soundLib = require('jsupm_groveloudness');         //including the upm_groveloudness library 
 var mySound = new soundLib.GroveLoudness(1);           //connect it to A1
 var beep = new beepLib.Gpio(4);                        //setting to gpio pin 4 (D4)
